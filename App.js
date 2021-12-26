@@ -1,20 +1,36 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { StatusBar } from "expo-status-bar";
+import { StyleSheet, Text, View } from "react-native";
+import { createStore, combineReducers } from "redux";
+import { Provider } from "react-redux";
+import { useState, useEffect } from "react";
+
+import AppIndex from "./AppIndex";
 
 export default function App() {
+  const loginUser = useState({ 이름: "성민", 나이: "28" });
+
+  const loginUserRedux = (state = loginUser, action) => {
+    switch (action.type) {
+      default:
+        return loginUser;
+    }
+  };
+
+  const store = createStore(combineReducers({ loginUser: loginUserRedux }));
+
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
+    <Provider store={store}>
       <StatusBar style="auto" />
-    </View>
+      <AppIndex />
+    </Provider>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: "#fff",
+    alignItems: "center",
+    justifyContent: "center",
   },
 });
