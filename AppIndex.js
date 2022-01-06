@@ -4,23 +4,20 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { connect } from "react-redux";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { createStackNavigator } from "@react-navigation/stack";
 import { Button, ButtonGroup, withTheme } from "react-native-elements";
 
 import Main from "./view/Main";
 import Game from "./view/Game";
 
 function AppIndex({ loginUser }) {
-  const Stack = createStackNavigator();
-
-  const startGame = (loginUser) => {};
+  const Tab = createBottomTabNavigator();
 
   return (
     <NavigationContainer>
-      <Stack.Navigator>
-        <Stack.Screen name="Main" component={Main} />
-        <Stack.Screen name="Game" component={Game} />
-      </Stack.Navigator>
+      <Tab.Navigator>
+        <Tab.Screen name="Main" component={Main} />
+        <Tab.Screen name="Game" component={Game} />
+      </Tab.Navigator>
     </NavigationContainer>
   );
 }

@@ -113,8 +113,8 @@ function App() {
 async function schedulePushNotification() {
   await Notifications.scheduleNotificationAsync({
     content: {
-      title: "You've got mail! 📬",
-      body: "Here is the notification body",
+      title: "금액제시",
+      body: "20,000원입니다",
       data: { data: "goes here" },
     },
     trigger: { seconds: 1 },
