@@ -18,7 +18,7 @@ class User extends Core {
   /**
    * * 단일 ROW 데이터
    */
-  getRow({ where, database }, callback) {
+  getRow({ where, database }) {
     let sql = `SELECT * FROM ${database}.user WHERE 1`;
 
     const result = this.core.excute({
