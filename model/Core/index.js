@@ -1,5 +1,4 @@
 "use strict";
-
 const { db } = require("../Core/database");
 
 class Core {
@@ -21,31 +20,35 @@ class Core {
 
   /**
    * * 쿼리 DB 실행 함수
+   * * new Promise 객체로 callback 없이 리턴값 받기
+   * * all : 배열 전체 row : 오브젝트
    * ! 생성자에 정의된 타입에 맞춰주세요
-   * ?
+   * ? Promise 객체에 대해서 자세히 공부해보기
+   * ? Callback 함수에 대해서 자세히 공부해보기
    */
   excute({ database, sql, type }) {
-    console.log(database, sql, type);
+    return new Promise(function (resolve, reject) {
+      db.getConnection(database, function (err, connection) {
+        if (err) {
+          console.log(JSON.stringify(err));
+        } else {
+          connection.query(sql, function (err, data, option) {
+            switch (type) {
+              case "all":
+                resolve(data);
 
-    db.getConnection(database, function (err, connection) {
-      if (err) {
-        console.log(JSON.stringify(err));
+                break;
+              case "row":
+                resolve(data[0] || {});
+                break;
+            }
 
-        console.log("에러났어");
-
-        // callback(err, null);
-      } else {
-        connection.query(sql, function (err, rows) {
-          console.log("연결은 잘됬는데 너 쿼리가 이상해");
-
-          if (!err) {
-            console.log("잘됬엉");
-            // callback(null, {
-            //   rows: rows,
-            // });
-          }
-        });
-      }
+            resolve(data);
+            // When done with the connection, release it.
+            connection.release();
+          });
+        }
+      });
     });
   }
 }

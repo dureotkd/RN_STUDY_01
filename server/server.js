@@ -19,10 +19,15 @@ const io = socketIo(http, {
 app.use(cors());
 app.use("/api", express.urlencoded({ extended: false }), router);
 
-http.listen(8080, (req, res) => {
+http.listen(8080, async (req, res) => {
   console.log(`서버가 요청 받을 준비가 되었습니다.😝`);
 
-  User.getRow();
+  const userRow = await User.getRow({
+    database: "soundGame",
+    where: 1,
+  });
+
+  console.log(userRow);
 });
 
 io.on("connection", (socket) => {
