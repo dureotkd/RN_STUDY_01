@@ -4,7 +4,7 @@ const db = mysql.createPoolCluster();
 db.add("soundGame", {
   host: "localhost",
   user: "root",
-  password: "@slsksh33@",
+  password: "",
   database: "soundGame",
   port: 3306,
 });
