@@ -1,13 +1,8 @@
 "use strict";
 const db = require("../Core/database");
-
-/**
- * use strict ?
- * module export 와 export 의 차이점
- */
 const Core = require("../Core");
 
-class User extends Core {
+class Summoner extends Core {
   constructor(props) {
     // Core 상속
     super(props);
@@ -19,13 +14,15 @@ class User extends Core {
    * * 단일 ROW 데이터
    */
   getRow({ where, database }) {
-    let sql = `SELECT * FROM ${database}.user WHERE 1`;
+    let sql = `SELECT * FROM ${database}.summoner WHERE 1`;
 
     const result = this.core.excute({
       database: database,
       sql: sql,
       type: "row",
     });
+
+    console.log(result);
 
     return result;
   }
@@ -43,8 +40,31 @@ class User extends Core {
   getCount() {
     console.log(`All Data...`);
   }
+
+  /**
+   * * INSERT 단일
+   */
+  save(data) {
+    const sql = this.core.getInsertQuery({
+      table: "summoner",
+      data: data,
+    });
+
+    const result = this.core.excute({
+      database: "soundGame",
+      sql: sql,
+      type: "exec",
+    });
+
+    return result;
+  }
+
+  /**
+   * * MULTI INSERT
+   */
+  multiSave() {}
 }
 
-const user = new User();
+const summoner = new Summoner();
 
-module.exports = user;
+module.exports = summoner;

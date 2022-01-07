@@ -7,8 +7,17 @@ class Core {
   /**
    * * MAKE MYSQL INSERT 쿼리문
    */
-  getInsertQuery() {
-    console.log(`getInsertQuery`);
+  getInsertQuery({ table, data }) {
+    const column = Object.keys(data);
+    const values = Object.values(data);
+
+    if (column.length !== values.length)
+      return throwError("Error Object Key Value");
+
+    const c = column.join(",");
+    const v = values.join("','");
+
+    return `INSERT INTO ${table}(${c}) VALUES ('${v}')`;
   }
 
   /**
@@ -40,6 +49,11 @@ class Core {
                 break;
               case "row":
                 resolve(data[0] || {});
+                break;
+
+              case "exec":
+                resolve(data.insertId);
+
                 break;
             }
 

@@ -49,9 +49,6 @@ function Main({ navigation, loginUser }) {
   return (
     <View style={{ padding: 10 }}>
       <Text>안녕하세요 메인 VIEW 입니다</Text>
-      <View style={{ marginTop: 20 }}>
-        <ImageAPI showDetailImage={showDetailImage} />
-      </View>
     </View>
   );
 }

@@ -4,6 +4,7 @@ import { createStore, combineReducers } from "redux";
 import { Provider } from "react-redux";
 import { useState, useEffect } from "react";
 import AppIndex from "./AppIndex";
+import NonMemberAppIndex from "./view/NonMemberIndex";
 import axios from "axios";
 
 export default function App() {
@@ -15,16 +16,11 @@ export default function App() {
 
   const getLoginUser = async () => {
     await axios
-      .get("http://192.168.219.101:8080/api/users/me")
+      .get("http://192.168.219.102:8080/api/users/me")
       .then(({ data, status }) => {
         if (status === 200) {
-          setLoginUser("zzzz");
-        } else {
-          setLoginUser({
-            seq: Math.random(),
-            id: `나그네_` + Math.random() * 100,
-          });
-        }
+          //setLoginUser(data);
+        } else alert("알수 없는 오류가 발생하였습니다");
       })
       .catch((e) => console.log(e))
       .then(() => {});
@@ -43,8 +39,8 @@ export default function App() {
 
   return (
     <Provider store={store}>
-      <StatusBar style="auto" />
-      <AppIndex />
+      <StatusBar style="light" animated={true} />
+      {loginUser ? <AppIndex /> : <NonMemberAppIndex />}
     </Provider>
   );
 }

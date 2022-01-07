@@ -10,6 +10,8 @@ import Main from "./view/Main";
 import Game from "./view/Game";
 
 function AppIndex({ loginUser }) {
+  console.log(loginUser);
+
   const Tab = createBottomTabNavigator();
 
   return (
