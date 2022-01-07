@@ -43,7 +43,6 @@ class Core {
                 break;
             }
 
-            resolve(data);
             // When done with the connection, release it.
             connection.release();
           });
