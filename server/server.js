@@ -61,7 +61,14 @@ router.post("/summoner", async (req, res) => {
  * * 소환사 리그 정보를 INSERT 합니다
  */
 router.post("/summonerLeage", async (req, res) => {
-  console.log(req.query);
-
   const insertId = JSON.parse(req.query);
+
+  res.send({});
+});
+
+/**
+ * *
+ */
+router.post("/createTeamLeague", async (req, res) => {
+  console.log(req.query);
 });

@@ -1,12 +1,14 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, ActivityIndicator } from "react";
 import { connect } from "react-redux";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { TextInput, TouchableOpacity } from "react-native-gesture-handler";
 import { Text, View } from "react-native";
 import { empty } from "../../helper";
 import LeageOfLegends from "../../api/LeagueOfLegends";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
-function Login({ loginUser }) {
+function Login({ dispatch }) {
+  const [loading, setLoading] = useState(false);
   const [loginId, setLoginId] = useState("");
 
   const handleLogin = async () => {
@@ -21,24 +23,27 @@ function Login({ loginUser }) {
       return;
     }
 
-    const { teamLeague, privateLeague } = await LeageOfLegends.getLeagueApi(
-      summonerApi.id
-    );
+    const { privateLeague } = await LeageOfLegends.getLeagueApi(summonerApi.id);
 
-    // 계정 생성
     await createSummonerAllData({
-      teamLeague,
       privateLeague,
       summonerApi,
     });
+
+    AsyncStorage.setItem("loginUser", JSON.stringify(summonerApi));
+
+    dispatch({
+      type: "doLogin",
+      payload: {
+        loginUser: summonerApi,
+      },
+    });
   };
 
-  const createSummonerAllData = async ({
-    teamLeague,
-    privateLeague,
-    summonerApi,
-  }) => {
-    // 소환사 정보 저장
+  const createSummonerAllData = async ({ privateLeague, summonerApi }) => {
+    /**
+     * * 소환사 개인정보 저장
+     */
     const { insertId } = await LeageOfLegends.createSummoner(summonerApi);
 
     if (empty(insertId)) {
@@ -46,22 +51,17 @@ function Login({ loginUser }) {
       return;
     }
 
-    console.log(privateLeague);
-
     /**
      * * 개인솔랭 리그정보 저장
      * ! 언랭일시 빈배열
      */
     await LeageOfLegends.createPrivateLeague(privateLeague, insertId);
 
-    // // 팀랭 리그정보 저장
-    // await LeagueApi.createTeamLeague(teamLeague, insertId);
-
-    // // 챔피언 숙련도 저장
-    // await LeagueApi.createChamiponMastery(championMasteryApi, insertId);
-
-    // setStart(true);
-    // alert("소환사 등록 성공");
+    try {
+      AsyncStorage.setItem("loginUser", JSON.stringify(loginUser));
+    } catch (e) {
+      alert(e);
+    }
   };
 
   return (
@@ -101,7 +101,7 @@ function Login({ loginUser }) {
 
 function ChangeState(props) {
   return {
-    loginUser: props.loginUser,
+    state: props.loginUser,
   };
 }
 

@@ -57,7 +57,6 @@ const LeagueApi = {
       url: url,
     })
       .then(({ status, data }) => {
-        console.log(status);
         if (status === 200 && !empty(data)) {
           data.forEach((row, idx) => {
             switch (row.queueType) {
@@ -156,50 +155,6 @@ const LeagueApi = {
       url: `${port}/api/summonerLeage`,
       params: {
         privateLeague,
-        insertId,
-      },
-    })
-      .then(({ status, data }) => {
-        if (status !== 200) res.isError = true;
-      })
-      .catch((e) => {
-        res.isError = true;
-      });
-
-    return res;
-  },
-  createTeamLeague: async function (teamLeague, insertId) {
-    if (empty(teamLeague)) return false;
-
-    const res = { isError: false };
-
-    await axios({
-      method: "GET",
-      url: `${port}/createTeamLeague`,
-      params: {
-        teamLeague,
-        insertId,
-      },
-    })
-      .then(({ status, data }) => {
-        if (status !== 200) res.isError = true;
-      })
-      .catch((e) => {
-        res.isError = true;
-      });
-
-    return res;
-  },
-  createChamiponMastery: async function (championMasteryApi, insertId) {
-    if (empty(championMasteryApi)) return false;
-
-    const res = { isError: false };
-
-    await axios({
-      method: "GET",
-      url: `${port}/createChamiponMastery`,
-      params: {
-        championMasteryApi,
         insertId,
       },
     })

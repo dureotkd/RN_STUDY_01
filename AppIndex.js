@@ -7,7 +7,10 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Button, ButtonGroup, withTheme } from "react-native-elements";
 
 import Main from "./view/Main";
-import Game from "./view/Game";
+import Game from "./view/Test";
+
+import NonMemberIndex from "./view/NonMemberIndex";
+import MemberIndex from "./view/MemberIndex";
 
 function AppIndex({ loginUser }) {
   console.log(loginUser);
@@ -16,10 +19,7 @@ function AppIndex({ loginUser }) {
 
   return (
     <NavigationContainer>
-      <Tab.Navigator>
-        <Tab.Screen name="Main" component={Main} />
-        <Tab.Screen name="Game" component={Game} />
-      </Tab.Navigator>
+      {loginUser ? <MemberIndex /> : <NonMemberIndex />}
     </NavigationContainer>
   );
 }

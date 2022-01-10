@@ -6,6 +6,7 @@ import { useState, useEffect } from "react";
 import AppIndex from "./AppIndex";
 import NonMemberAppIndex from "./view/NonMemberIndex";
 import axios from "axios";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function App() {
   const [loginUser, setLoginUser] = useState("");
@@ -19,19 +20,25 @@ export default function App() {
       .get("http://192.168.219.102:8080/api/users/me")
       .then(({ data, status }) => {
         if (status === 200) {
-          //setLoginUser(data);
+          const loginUserAsync = AsyncStorage.getItem("loginUser");
+          if (loginUserAsync) setLoginUser(loginUserAsync);
         } else alert("알수 없는 오류가 발생하였습니다");
       })
       .catch((e) => console.log(e))
       .then(() => {});
-
-    console.log("?");
   };
 
   const loginUserRedux = (state = loginUser, action) => {
     switch (action.type) {
-      default:
+      case "doLogin":
+        const loginUser = action.payload.loginUser;
+
+        console.log(loginUser);
+
         return loginUser;
+
+      default:
+        return state;
     }
   };
 
@@ -39,8 +46,8 @@ export default function App() {
 
   return (
     <Provider store={store}>
-      <StatusBar style="light" animated={true} />
-      {loginUser ? <AppIndex /> : <NonMemberAppIndex />}
+      <StatusBar auto={true} style="" animated={true} />
+      <AppIndex />
     </Provider>
   );
 }
